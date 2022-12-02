@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword,  } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendSignInLinkToEmail  } from 'firebase/auth';
 import { auth } from '../firebase-config';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +17,7 @@ export default function Register() {
       console.log(user);
       alert("Account Created")
       navigate('/')
+      user.sendSignInLinkToEmail(email)
     }catch(error){
       toast.error(error.message);
     }
