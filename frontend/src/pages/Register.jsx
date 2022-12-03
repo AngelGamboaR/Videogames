@@ -3,7 +3,10 @@ import { createUserWithEmailAndPassword, sendSignInLinkToEmail  } from 'firebase
 import { auth } from '../firebase-config';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase-config'
+
 
 
 export default function Register() {
@@ -11,17 +14,23 @@ export default function Register() {
   const [ password, setPassword ] = useState('');
   const navigate = useNavigate();
 
+  const goBack = () => {
+    navigate('/')
+  }
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(user);
       alert("Account Created")
       navigate('/')
       user.sendSignInLinkToEmail(email)
+      console.log(user.user.uid);
+      const docuRef= doc(db, `usuarios/${user.user.uid}`);
+      setDoc(docuRef,{correo:email, rol:"usuario"});
+
     }catch(error){
       toast.error(error.message);
     }
-   
+     
   }
 
   return (
@@ -69,6 +78,13 @@ export default function Register() {
               onClick={register}
               >
                 Register
+              </button>
+              <button
+                type="button"
+                className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+              onClick={goBack}
+              >
+              Go Back
               </button>
               <p className="text-sm font-semibold mt-2 pt-1 mb-0">
               </p>
