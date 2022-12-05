@@ -190,8 +190,6 @@ export default function Profile() {
               </tr>
               )
             })}
-            }
-           
           </tbody>
         </table>
       </div>
