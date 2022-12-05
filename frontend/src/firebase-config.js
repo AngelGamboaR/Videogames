@@ -6,6 +6,7 @@ import { getFirestore } from "firebase/firestore";
 export const firebaseConfig= {
   apiKey: "AIzaSyARwgxOakGeTGGNLOEFHn-0TxPzS9GxDvc",
   authDomain: "videgamesapp.firebaseapp.com",
+  databaseURL: "https://videgamesapp-default-rtdb.firebaseio.com",
   projectId: "videgamesapp",
   storageBucket: "videgamesapp.appspot.com",
   messagingSenderId: "16090400600",

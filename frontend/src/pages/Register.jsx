@@ -19,16 +19,14 @@ export default function Register() {
   }
   const register = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      alert("Account Created")
-      navigate('/')
-      user.sendSignInLinkToEmail(email)
-      console.log(user.user.uid);
-      const docuRef= doc(db, `usuarios/${user.user.uid}`);
-      setDoc(docuRef,{correo:email, rol:"usuario"});
-
+      const user = await createUserWithEmailAndPassword(auth, email, password)
+      console.log(user.user.uid)
+      const docuRef= doc(db, `usuarios/${user.user.uid}`)
+      setDoc(docuRef,{correo:email, rol:"usuario"})
+      console.log('creado en bd')
+      
     }catch(error){
-      toast.error(error.message);
+      toast.error(error.message)
     }
      
   }

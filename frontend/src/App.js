@@ -1,25 +1,14 @@
 import './App.css';
-import {Routes, Route, redirect} from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Main from './pages/Main'
 import Profile from './pages/Profile'
-import {useState} from 'react'
-import { onAuthStateChanged } from 'firebase/auth';
+import {useState, useEffect} from 'react'
 import {auth} from './firebase-config'
-import {useEffect} from 'react'
+
 
 function App() {
-
-  const [user, setUser] = useState({})
-
-  useEffect(()=>{
-    onAuthStateChanged(auth,(currentUser)=>{
-      setUser(currentUser);
-    })
-  },[])
- 
-
   return (
     <div>
     <Routes>
@@ -34,3 +23,4 @@ function App() {
 }
 
 export default App;
+

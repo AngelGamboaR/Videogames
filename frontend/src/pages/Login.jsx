@@ -1,20 +1,41 @@
 import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import React,{ useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../firebase-config';
+import { auth, db } from '../firebase-config';
+import { collection,query, where, getFirestore, getDoc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
+
+
+
 
 export default function Login() {
   const navigate = useNavigate();
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [user, setUser] = useState({});
+  const [document, setDocument] = useState([])
 
-   
-  const logIntoAcc = async () =>{
-      const user = await signInWithEmailAndPassword(auth,email,password)
-      navigate('/Main')
-      console.log(user)
-  }
+
+    useEffect(() => {
+      setUser(JSON.parse(localStorage.getItem('usuarioLogeado')))
+    }
+    , [])
+
+
+  const logIntoAcc = async () => {
+    const usuario = await signInWithEmailAndPassword(auth, email, password)
+    navigate('/Main')
+    setUser(usuario)
+    const usuarioLogg = auth.currentUser
+    localStorage.setItem('usuarioLogeado', JSON.stringify(usuarioLogg))
+    const docRef = doc(db, "usuarios", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap.data())
+    localStorage.setItem('tipoUsuario',JSON.stringify(docSnap.data().rol))
+
+  }    
+
+
   
   return (
     <section className="h-screen">
@@ -57,7 +78,7 @@ export default function Login() {
             </div>
   
             <div className="flex justify-between items-center mb-6">
-              <a href="#!" className="text-gray-800">Forgot password?</a>
+              <a className="text-gray-800" >Forgot password?</a>
             </div>
   
             <div className="text-center l g:text-left">
